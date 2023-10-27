@@ -1,6 +1,7 @@
 package com.saksoft.controller;
 
 import com.saksoft.dto.EmployeeManagementDTO;
+import com.saksoft.exception.EMException;
 import com.saksoft.service.EmployeeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,4 +28,10 @@ public class EmployeeManagementController {
         List<EmployeeManagementDTO> allEmployee = employeeManagementService.getAllEmployee();
         return ResponseEntity.ok(allEmployee);
     }
+
+    @GetMapping("/{id}")
+    public EmployeeManagementDTO getEmployeeById(@PathVariable Long id) throws EMException {
+        return employeeManagementService.getEmployeeById(id);
+    }
+
 }
