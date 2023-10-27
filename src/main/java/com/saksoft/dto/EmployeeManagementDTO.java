@@ -14,8 +14,8 @@ import org.springframework.beans.BeanUtils;
 public class EmployeeManagementDTO {
     public EmployeeManagementDTO(EmployeeManagement employeeManagement) {
         BeanUtils.copyProperties(employeeManagement, this);
-
     }
+
     private Long id;
     private String firstName;
     private String lastName;
