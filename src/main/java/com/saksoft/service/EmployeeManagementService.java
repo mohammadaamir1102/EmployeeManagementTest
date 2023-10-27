@@ -1,6 +1,7 @@
 package com.saksoft.service;
 
 import com.saksoft.dto.EmployeeManagementDTO;
+import com.saksoft.dto.PaginationDTO;
 import com.saksoft.exception.EMException;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface EmployeeManagementService {
     String deleteEmployee(Long id) throws EMException;
 
     EmployeeManagementDTO updateEmployeeByFields(Long id, Map<String, Object> fields) throws EMException;
+
+    Map<String, Object> getAllEmployeeByPagination(PaginationDTO paginationDTO);
+
 }

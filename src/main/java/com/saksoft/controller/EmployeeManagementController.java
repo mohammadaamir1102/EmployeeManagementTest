@@ -1,6 +1,7 @@
 package com.saksoft.controller;
 
 import com.saksoft.dto.EmployeeManagementDTO;
+import com.saksoft.dto.PaginationDTO;
 import com.saksoft.exception.EMException;
 import com.saksoft.service.EmployeeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,15 @@ public class EmployeeManagementController {
     @ResponseStatus(HttpStatus.OK)
     public EmployeeManagementDTO getEmployeeById(@PathVariable Long id) throws EMException {
         return employeeManagementService.getEmployeeById(id);
+    }
+
+    @GetMapping(value = "/getAllEmployee/{page}/{offset}")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, Object> getAllEmployeeByPagination(@PathVariable Long page, @PathVariable Long offset) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        paginationDTO.setOffset(offset.intValue());
+        paginationDTO.setPageNumber(page.intValue());
+        return employeeManagementService.getAllEmployeeByPagination(paginationDTO);
     }
 
     @PutMapping("/{id}")

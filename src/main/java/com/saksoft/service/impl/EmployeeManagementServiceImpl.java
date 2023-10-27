@@ -1,18 +1,22 @@
 package com.saksoft.service.impl;
 
 import com.saksoft.dto.EmployeeManagementDTO;
+import com.saksoft.dto.PaginationDTO;
 import com.saksoft.entity.EmployeeManagement;
 import com.saksoft.exception.EMException;
 import com.saksoft.repository.EmployeeManagementRepository;
 import com.saksoft.service.EmployeeManagementService;
+import com.saksoft.service.PaginationService;
 import com.saksoft.util.EMConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,6 +26,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 
     @Autowired
     private EmployeeManagementRepository employeeManagementRepository;
+    @Autowired
+    private PaginationService paginationService;
 
     @Value("${ems.employee.not.found.code}")
     private String empNotFoundCode;
@@ -88,5 +94,17 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
             ReflectionUtils.setField(field, existingEmployee.get(), value);
         });
         return new EmployeeManagementDTO(employeeManagementRepository.save(existingEmployee.get()));
+    }
+
+    @Override
+    public Map<String, Object> getAllEmployeeByPagination(PaginationDTO paginationDTO) {
+        Page<EmployeeManagement> employee =
+                employeeManagementRepository.findAll(paginationService.getPagination(paginationDTO));
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("data", employee);
+        dataMap.put("totalPage", employee.getTotalPages());
+        dataMap.put("currentPage", employee.getNumber());
+        dataMap.put("totalRecords", employee.getSize());
+        return dataMap;
     }
 }

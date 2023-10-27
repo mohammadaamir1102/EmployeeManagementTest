@@ -6,12 +6,14 @@ import com.saksoft.entity.EmployeeManagement;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class EmployeeManagementDTO {
+public class EmployeeManagementDTO implements Serializable {
     public EmployeeManagementDTO(EmployeeManagement employeeManagement) {
         BeanUtils.copyProperties(employeeManagement, this);
     }
