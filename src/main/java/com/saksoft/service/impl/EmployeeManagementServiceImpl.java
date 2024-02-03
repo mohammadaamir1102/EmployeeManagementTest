@@ -8,6 +8,8 @@ import com.saksoft.repository.EmployeeManagementRepository;
 import com.saksoft.service.EmployeeManagementService;
 import com.saksoft.service.PaginationService;
 import com.saksoft.util.EMConstant;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -16,12 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
 
     @Autowired
@@ -33,6 +34,16 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     private String empNotFoundCode;
     @Value("${ems.employee.not.found.message}")
     private String empNotFoundMessage;
+     public static List<EmployeeManagement> list = new ArrayList<>();
+
+    static {
+        list = List.of(new EmployeeManagement(1L, "hello", "john", "@gmail.com", 10));
+    }
+
+    @Override
+    public List<EmployeeManagement> getDummyData(){
+        return  list;
+    }
 
     @Override
     public EmployeeManagementDTO saveEmployee(EmployeeManagementDTO employeeManagementDTO) {
@@ -49,6 +60,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     @Override
     public EmployeeManagementDTO getEmployeeById(Long id) throws EMException {
         Optional<EmployeeManagement> employee = employeeManagementRepository.findById(id);
+        log.info("employee is {}", employee);
         if (employee.isEmpty()) {
             throw new EMException(empNotFoundCode, empNotFoundMessage, HttpStatus.NOT_FOUND);
         }

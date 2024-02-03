@@ -2,6 +2,7 @@ package com.saksoft.controller;
 
 import com.saksoft.dto.EmployeeManagementDTO;
 import com.saksoft.dto.PaginationDTO;
+import com.saksoft.entity.EmployeeManagement;
 import com.saksoft.exception.EMException;
 import com.saksoft.service.EmployeeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,11 @@ public class EmployeeManagementController {
     @ResponseStatus(HttpStatus.OK)
     public String deleteEmployee(@PathVariable Long id) throws EMException {
         return employeeManagementService.deleteEmployee(id);
+    }
+
+    @GetMapping("/getDummyData")
+    public List<EmployeeManagement> getEmployeeDummyData(){
+        return employeeManagementService.getDummyData();
     }
 
 }
